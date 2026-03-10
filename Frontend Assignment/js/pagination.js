@@ -15,7 +15,7 @@ function displayPagination() {
       `;
   }
   console.log(currId);
-  handleCurrPage(currId);
+  // handleCurrPage(currId);
 }
 
 // let pagination = document.querySelectorAll("#pagination>button");
@@ -47,7 +47,11 @@ async function handleCurrPage(activePage) {
   currId = activePage;
 
   // 1. Fetch and append the data for this page
-  if (activePage != 1) {
+  // if (activePage != 1) {
+  //   await loadPageData(activePage);
+  // }
+
+  if (!loadedPages.has(activePage)) {
     await loadPageData(activePage);
   }
   // console.log(activePage);

@@ -2,23 +2,25 @@ let count = document.getElementById("fav-count");
 let itemContainer = document.getElementById("favItemContainer");
 let favItemsCount = document.getElementById("fav-count");
 // console.log(count.value);
- let favProducts = JSON.parse(localStorage.getItem("favProds")) || null; 
+let cartData = JSON.parse(localStorage.getItem("cartData")) || [];
 
+console.log(cartData);
 
-async function displayFavouriteProducts() {
- 
+console.log(cartData);
+
+async function displayFavouriteProducts(products) {
   // console.log(favProducts);
-  favItemsCount.textContent = favProducts.length;
-  if (favProducts && favProducts.length > 0) {
+  favItemsCount.textContent = products?.length || 0;
+  if (products && products.length > 0) {
     itemContainer.innerHTML = "";
-    favProducts.forEach((element) => {
+    products.forEach((element, index) => {
       itemContainer.innerHTML += `
       <div class="favItem" >
     <img  src="${element.thumbnail}" alt="">
      <p>${element.title}</p>
-       <button onclick="countFun(${element.id})" >+</button>
-     <p>${element.price}</p>
-       <button onclick="countFun(${element.id})" >-</button>
+       <button onclick="countFun('+',${index})" >+</button>
+     <p>${element.count}</p>
+       <button onclick="countFun('-', ${index})" >-</button>
    
     </div>
          `;
@@ -30,16 +32,41 @@ async function displayFavouriteProducts() {
   }
 }
 
-displayFavouriteProducts();
+displayFavouriteProducts(cartData);
 
 function removeFavItem(idx) {
-  let favProducts = JSON.parse(localStorage.getItem("favProds"));
-  // console.log(idx);
+  let favProducts = JSON.parse(localStorage.getItem("cartData"))||[];
+  console.log(idx);
+  console.log(favProducts);
   let newUpdatedList = favProducts && favProducts.filter((p) => p.id !== idx);
   // console.log(newUpdatedList);
-  localStorage.removeItem("favProds");
-  localStorage.setItem("favProds", JSON.stringify(newUpdatedList));
-  displayFavouriteProducts();
+  console.log("Inside removeFav", newUpdatedList);
+  // localStorage.removeItem("cartData");
+  localStorage.setItem("cartData", JSON.stringify(newUpdatedList));
+  cartData = newUpdatedList
+  console.log(cartData);
+  // let data = localStorage.getItem("cartData")
+  displayFavouriteProducts(cartData);
+}
+
+function countFun(symbol, index) {
+  console.log(index);
+  console.log(cartData);
+  console.log(cartData[index].id);
+
+  if (symbol === "+") {
+    console.log(cartData[index]);
+    cartData[index].count++;
+  } else {
+    if (cartData[index].count === 1) {
+      console.log(cartData[index].count);
+      removeFavItem(cartData[index].id);
+      return;
+    }
+    cartData[index].count--;
+  }
+  localStorage.setItem("cartData", JSON.stringify(cartData));
+  displayFavouriteProducts(cartData);
 }
 
 // function handleFavourite(idx) {
@@ -53,7 +80,7 @@ function removeFavItem(idx) {
 //     price: favProd[0].price,
 //     rating: "rating",
 //   };
-//   let allFavProd = JSON.parse(localStorage.getItem("favProds"));
+//   let allFavProd = JSON.parse(localStorage.getItem("cartData"));
 
 //   if (favProd && allFavProd?.length > 0) {
 //     console.log(allFavProd);
@@ -65,10 +92,10 @@ function removeFavItem(idx) {
 //     }
 //     let newAllFavProds = [...allFavProd, obj];
 //     console.log(newAllFavProds);
-//     localStorage.setItem("favProds", JSON.stringify(newAllFavProds));
+//     localStorage.setItem("cartData", JSON.stringify(newAllFavProds));
 //     alert("Added to Favourite");
 //   } else {
 //     console.log(obj);
-//     localStorage.setItem("favProds", JSON.stringify([obj]));
+//     localStorage.setItem("cartData", JSON.stringify([obj]));
 //   }
 // }

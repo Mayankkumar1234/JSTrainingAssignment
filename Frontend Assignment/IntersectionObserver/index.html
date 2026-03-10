@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Scroll Pagination</title>
+</head>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden; /* Hide default body scrollbar */
+}
+
+.container {
+    height: 100vh;
+    overflow-y: scroll; /* Enable scrolling in the container */
+    scroll-snap-type: y mandatory; /* Mandatory snapping on the Y axis */
+    scroll-behavior: smooth; /* Smooth scrolling animation */
+}
+
+.page {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start; /* Snap each section to the start of the container */
+    font-family: sans-serif;
+    color: white;
+}
+
+/* Add different colors for visual distinction */
+#page-1 { background-color: #ff5733; }
+#page-2 { background-color: #3371ff; }
+#page-3 { background-color: #33ff57; }
+
+/* Style the sentinel/loader if needed */
+#sentinel {
+    height: 100px;
+    background-color: transparent;
+}
+
+</style>
+<body>
+    <div class="container">
+        <!-- Add multiple sections for content -->
+        <section id="page-1" class="page">
+            <h1>Page 1</h1>
+        </section>
+        <section id="page-2" class="page">
+            <h1>Page 2</h1>
+        </section>
+        <section id="page-3" class="page">
+            <h1>Page 3</h1>
+        </section>
+        <!-- A small footer/sentinel div for JS intersection observer -->
+        <div id="sentinel"></div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
